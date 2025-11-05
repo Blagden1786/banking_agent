@@ -6,6 +6,7 @@ ORCHESTRATOR_PROMPT = """You are an orchestrator agent that's is to find out wha
 
 You have access to the following agents:
 1. Savings Agent: Finds the best savings account for the user. Run with savings_agent()
+2. Credit Agent: Finds the best credit card for the user. Run with credit_agent()
 
 When calling an agent, use exactly the following format:
 HANDOFF: <agent_name>()
@@ -28,12 +29,12 @@ class Orchestrator(GenericAgent):
             response = self.get_response(self.main_prompt)
 
             if response != None:
-                next_question=re.search("^HANDOFF", response)
+                next_question=re.search(r"(savings_agent\(\))|(credit_agent\(\))", response)
 
                 # No tool is called then the agent has sufficient info so it has produced the final prompt to be used by the savings agent
                 if next_question != None:
                     self.main_prompt = self.prompt_builder()
-                    break
+                    return next_question.group()
 
                 print(response)
                 answer = input("ANSWER: ")
@@ -42,5 +43,3 @@ class Orchestrator(GenericAgent):
                 self.main_prompt += f"\n{response}: ANSWER: {answer}"
             else:
                 return "ERROR: LLM failed to produce answer"
-
-        return response

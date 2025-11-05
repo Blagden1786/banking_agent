@@ -8,6 +8,12 @@ if __name__ == "__main__":
     agent = s.SavingsAgent()
 
     agent_choice = orca.run_agent()
-    prompt = triage.run_agent()
-    print(prompt)
-    agent.run_agent(prompt, True)
+
+    match agent_choice:
+        case "savings_agent()":
+            prompt = triage.run_agent()
+            output = agent.run_agent(prompt, True)
+        case _:
+            output = "This agent has yet to be built"
+
+    print(output)

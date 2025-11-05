@@ -39,8 +39,10 @@ class SavingsAgent(GenericAgent):
             response = self.get_response(prompt)
             if response is None:
                 return "Error: No response from model."
+
             if trace:
-                print(f"Agent response: {response}")
+                print("\n\n----------------------AGENT RESPONSE----------------------")
+                print(response)
 
 
             tool_call = self.tool_use(response)
@@ -52,6 +54,7 @@ class SavingsAgent(GenericAgent):
                     tool_result = f"Error executing tool: {e}"
 
                 if trace:
+                    print("\n----------------------TOOL RESPONSE----------------------")
                     print(f"Tool call: {tool_call}")
                     print(f"Tool result: {tool_result}")
 
