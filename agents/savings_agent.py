@@ -34,8 +34,6 @@ class SavingsAgent(GenericAgent):
         """
         prompt = self.prompt_builder() + task
 
-        print(prompt)
-
         while True:
             # Get response from the model
             response = self.get_response(prompt)
