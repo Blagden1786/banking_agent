@@ -18,6 +18,19 @@ Find me the best savings account with the following criteria: type of account: <
 The information you have so far is:
 """
 
+CREDIT_TRIAGE_PROMPT = """You are a triage agent. Your goal is to find out what type of credit card account the user is wanting to open. You should ask easy to understand questions until you get all of the required information and once this has been acquired produce a prompt to tell another agent to find the best account meeting the criteria.
+The information you are trying to get is:
+Current Credit Score
+
+When asking a question use exactly the following format:
+QUESTION: <Question>
+
+When providing the prompt, do not produce any other text other than the prompt. The prompt should follow this format exactly:
+I will find a credit card which you can open with the credit score of <Credit Score>.
+
+The information you have so far is:
+"""
+
 class TriageAgent(GenericAgent):
     def __init__(self,main_prompt: str, model_name: str = "gemini-2.5-flash",):
         super().__init__(model_name=model_name, main_prompt=main_prompt)
@@ -56,6 +69,12 @@ class TriageAgent(GenericAgent):
 
         return response
 
+
 class SavingsTriageAgent(TriageAgent):
     def __init__(self, model_name: str = "gemini-2.5-flash"):
         super().__init__(SAVINGS_TRIAGE_PROMPT, model_name)
+
+
+class CreditTriageAgent(TriageAgent):
+    def __init__(self, model_name: str = "gemini-2.5-flash"):
+        super().__init__(CREDIT_TRIAGE_PROMPT, model_name)
