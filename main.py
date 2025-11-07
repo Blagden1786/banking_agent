@@ -5,7 +5,7 @@ import agents.orchestrator_agent as o
 if __name__ == "__main__":
     agent = s.SavingsAgent()
 
-    agent.run_agent("Best savings account with no access and fixed interest rate", True)
+    agent.run_agent("Best isa account with no access and fixed interest rate", True)
 
     """
     orca = o.Orchestrator()
