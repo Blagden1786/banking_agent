@@ -32,7 +32,7 @@ The information you have so far is:
 """
 
 class TriageAgent(GenericAgent):
-    def __init__(self,main_prompt: str, model_name: str = "gemini-2.5-flash-lite",):
+    def __init__(self,main_prompt: str, model_name: str = "gemini-2.5-flash",):
         super().__init__(model_name=model_name, main_prompt=main_prompt)
 
         self.llm_error ="ERROR: LLM failed to produce answer"
@@ -73,10 +73,10 @@ class TriageAgent(GenericAgent):
 
 
 class SavingsTriageAgent(TriageAgent):
-    def __init__(self, model_name: str = "gemini-2.5-flash"):
-        super().__init__(SAVINGS_TRIAGE_PROMPT, model_name)
+    def __init__(self):
+        super().__init__(SAVINGS_TRIAGE_PROMPT)
 
 
 class CreditTriageAgent(TriageAgent):
-    def __init__(self, model_name: str = "gemini-2.5-flash"):
-        super().__init__(CREDIT_TRIAGE_PROMPT, model_name)
+    def __init__(self):
+        super().__init__(CREDIT_TRIAGE_PROMPT)

@@ -85,5 +85,5 @@ class SearchAgent(GenericAgent):
         return response
 
 class SavingsAgent(SearchAgent):
-    def __init__(self, model_name: str = "gemini-2.5-flash"):
-        super().__init__(SAVINGS_PROMPT, SAVINGS_URLS, ["interest_calc"], model_name)
+    def __init__(self):
+        super().__init__(SAVINGS_PROMPT, SAVINGS_URLS, ["interest_calc"])
