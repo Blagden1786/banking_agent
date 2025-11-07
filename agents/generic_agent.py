@@ -4,7 +4,7 @@ from .tools.tools import TOOL_PROMPT_START, available_tools_regex, TOOL_PROMPT_E
 
 class GenericAgent:
     """Wrapper class for any agent."""
-    def __init__(self, model_name: str = "gemini-2.5-flash", main_prompt: str = "", tools: list = []):
+    def __init__(self, model_name: str = "gemini-2.5-flash-lite", main_prompt: str = "", tools: list = []):
         """Initialize the agent
 
         Args:
@@ -17,12 +17,14 @@ class GenericAgent:
         self.model_name = model_name
         self.agent = genai.Client()
 
-        # Set the main prompt
-        self.main_prompt = main_prompt
-
         # Initialize tools
         self.tools = tools
         self.tools_regex = self.regex_builder()
+
+        # Set the main prompt
+        self.main_prompt = main_prompt
+        self.prompt = self.prompt_builder()
+
 
 
     def get_response(self, prompt: str) -> str | None:

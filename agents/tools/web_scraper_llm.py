@@ -31,7 +31,7 @@ The input you will receive will either be plain text or html code for a collecti
 
     client = genai.Client()
     response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=PROMPT
+            model="gemini-2.5-flash-lite", contents=PROMPT
         )
 
     return response.text

@@ -32,10 +32,12 @@ The information you have so far is:
 """
 
 class TriageAgent(GenericAgent):
-    def __init__(self,main_prompt: str, model_name: str = "gemini-2.5-flash",):
+    def __init__(self,main_prompt: str, model_name: str = "gemini-2.5-flash-lite",):
         super().__init__(model_name=model_name, main_prompt=main_prompt)
-    # Additional methods specific to TriageAgent can be added here
 
+        self.llm_error ="ERROR: LLM failed to produce answer"
+
+    # Additional methods specific to TriageAgent can be added here
     def run_agent(self):
         """The triage agent function that interacts with the user to gather information about their savings account needs.
 
@@ -47,7 +49,7 @@ class TriageAgent(GenericAgent):
         """
         while True:
             # Generate the response
-            response = self.get_response(self.main_prompt)
+            response = self.get_response(self.prompt)
 
             if response != None:
                 next_question=re.search("^QUESTION", response)
@@ -56,16 +58,16 @@ class TriageAgent(GenericAgent):
                 if next_question == None:
                     print("Thanks, I will now find the best account for you.")
                     # Reset prompt
-                    self.main_prompt = self.prompt_builder()
+                    self.prompt = self.prompt_builder()
                     break
 
                 print(response)
                 answer = input("ANSWER: ")
 
                 # Append the answer to the prompt for the next iteration
-                self.main_prompt += f"\n{response}: ANSWER: {answer}"
+                self.prompt += f"\n{response}: ANSWER: {answer}"
             else:
-                return "ERROR: LLM failed to produce answer"
+                return self.llm_error
 
         return response
 
