@@ -3,6 +3,11 @@ import agents.triage_agent as t
 import agents.orchestrator_agent as o
 
 if __name__ == "__main__":
+    agent = s.SavingsAgent()
+
+    agent.run_agent("Best savings account with no access and fixed interest rate", True)
+
+    """
     orca = o.Orchestrator()
     triage = t.SavingsTriageAgent()
     agent = s.SavingsAgent()
@@ -17,3 +22,4 @@ if __name__ == "__main__":
             output = "This agent has yet to be built"
 
     print(output)
+    """

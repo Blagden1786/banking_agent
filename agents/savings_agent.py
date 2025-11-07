@@ -1,5 +1,6 @@
 from .generic_agent import GenericAgent
 from .tools.tools import *
+from .tools.web_scraper_llm import web_search
 
 
 
@@ -16,10 +17,15 @@ Now begin, remember to use the EXACT format as above.
 Once you have sufficient information to provide an answer give a natural answer to the question.
 
 Requirments: """
+SAVINGS_URLS = ['https://www.natwest.com/savings.html', 'https://www.hsbc.co.uk/savings/products/']
 
-class SavingsAgent(GenericAgent):
-    def __init__(self, model_name: str = "gemini-2.5-flash"):
-        super().__init__(model_name=model_name, main_prompt=SAVINGS_PROMPT, tools=["account_finder_tool", "interest_calc"])
+class SearchAgent(GenericAgent):
+    def __init__(self, main_prompt, available_sites, tools=[], model_name: str = "gemini-2.5-flash"):
+        # The urls available to the agent
+        self.urls = available_sites
+
+        super().__init__(model_name=model_name, main_prompt=main_prompt, tools=tools + ['search_tool'])
+
     # Additional methods specific to SavingsAgent can be added here
 
     def run_agent(self, task:str, trace: bool = False) -> str:
@@ -63,3 +69,21 @@ class SavingsAgent(GenericAgent):
             else:
                 # No tool used, return the final answer
                 return response
+
+    def search_tool(self, search=""):
+        """Search tool for the search agent to use. It access the urls given in the init
+
+        Args:
+            search (str, optional): String describing what to get the LLM to find in the pages. Defaults to "".
+
+        Returns:
+            str: A string of relevant accounts in the JSON format
+        """
+        # Get HTML source code of the webpage
+        response = web_search(self.urls, search)
+
+        return response
+
+class SavingsAgent(SearchAgent):
+    def __init__(self, model_name: str = "gemini-2.5-flash"):
+        super().__init__(SAVINGS_PROMPT, SAVINGS_URLS, ["interest_calc"], model_name)
