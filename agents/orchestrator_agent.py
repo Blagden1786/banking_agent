@@ -34,37 +34,48 @@ class Orchestrator(GenericAgent):
         self.savings_search = SavingsAgent()
         self.credit_triage = CreditTriageAgent()
 
-    def run_agent(self):
-        while True:
-            # Generate the response
-            response = self.get_response(self.prompt)
+    def run_agent(self, user_input: str | None = None):
+        # Add user input to response
+        if user_input != None:
+            self.prompt += f"User: {user_input}\n"
+        # Generate the response
+        response = self.get_response(self.prompt)
 
-            if response != None:
-                #TODO: Change Regex
-                next_question=re.search(r"(savings_triage)|(credit_triage)", response)
+        if response != None:
+            #TODO: Change Regex
+            next_question=re.search(r"(savings_triage)|(credit_triage)", response)
 
-                # No tool is called then the agent has sufficient info so it has produced the final prompt to be used by the savings agent
-                if next_question != None:
-                    self.prompt = self.prompt_builder()
+            # No tool is called then the agent has sufficient info so it has produced the final prompt to be used by the savings agent
+            if next_question != None:
+                self.prompt = self.prompt_builder()
 
-                    # Move to next agent
-                    if next_question.group() in self.triage_agents_to_handoff:
-                        print("Next agent: " + next_question.group())
-                        self.current_agent = lambda : self.run_triage_agent(eval("self." + next_question.group()))
-                        return
-                print(response)
-                answer = input("ANSWER: ")
+                # Move to next agent
+                if next_question.group() in self.triage_agents_to_handoff:
+                    print("Next agent: " + next_question.group())
+                    self.current_agent = lambda x : self.run_triage_agent(eval("self." + next_question.group()), x)
 
-                # Append the answer to the prompt for the next iteration
-                self.prompt += f"\n{response}: ANSWER: {answer}"
-            else:
-                return "ERROR: LLM failed to produce answer"
+                    response = self.current_agent(None)
 
-    def run_triage_agent(self, agent:TriageAgent):
-        response = agent.run_agent()
+                    return response
 
-        if response != agent.llm_error:
-            self.current_agent = lambda : self.run_search_agent(response, self.savings_search)
+            # Append the answer to the prompt for the next iteration
+            self.prompt += f"\n Agent: {response}"
+
+            return response
+        else:
+            return "ERROR: LLM failed to produce answer"
+
+    def run_triage_agent(self, agent:TriageAgent, user_input: str):
+        response, next_question = agent.run_agent(user_input)
+
+        # If no next question we move on to next agent
+        if next_question == None:
+            # Currently send to savings agent. Need to change this
+            self.current_agent = lambda _ : self.run_search_agent(response, self.savings_search)
+            return "Thanks, I will now find the best suitable account"
+        else:
+            return response
+
 
     def run_search_agent(self, task, agent:SearchAgent):
         output = agent.run_agent(task, True)
