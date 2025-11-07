@@ -3,10 +3,10 @@ import agents.triage_agent as t
 import agents.orchestrator_agent as o
 
 if __name__ == "__main__":
-    agent = s.SavingsAgent()
+    orces = o.Orchestrator()
 
-    agent.run_agent("Best isa account with no access and fixed interest rate", True)
-
+    orces.current_agent()
+    orces.current_agent()
     """
     orca = o.Orchestrator()
     triage = t.SavingsTriageAgent()
