@@ -1,4 +1,4 @@
-from agents.search_agent import CreditAgent, SavingsAgent, SearchAgent
+from agents.search_agent import *
 from .generic_agent import GenericAgent
 
 import re
@@ -13,6 +13,8 @@ Any interest calculation the user would like done: Eg £100 over 2 years
 When asking a question use exactly the following format:
 QUESTION: <Question>
 
+If the user decides to end the chat write exactly the following: ENDCHAT
+
 When providing the prompt, do not produce any other text other than the prompt. The prompt should follow this format exactly:
 Find me the best savings account with the following criteria: type of account: <type>; rate: <rate>; access amount: <access>; interest calculation: <calculation>
 
@@ -25,6 +27,8 @@ Current Credit Score
 
 When asking a question use exactly the following format:
 QUESTION: <Question>
+
+If the user decides to end the chat write exactly the following: ENDCHAT
 
 When providing the prompt, do not produce any other text other than the prompt. The prompt should follow this format exactly:
 I will find a credit card which you can open with the credit score of <Credit Score>.
@@ -59,6 +63,11 @@ class TriageAgent(GenericAgent):
         response = self.get_response(self.prompt)
 
         if response != None:
+            # Check for end chat
+            if re.search("ENDCHAT", response) != None:
+                print("Exiting chat")
+                return response, ""
+
             next_question=re.search("^QUESTION", response)
 
             # No question is asked then the agent has sufficient info so it has produced the final prompt to be used by the savings agent

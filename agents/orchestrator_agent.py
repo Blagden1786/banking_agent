@@ -8,7 +8,7 @@ ORCHESTRATOR_PROMPT = """You are an orchestrator agent that's is to find out wha
 
 You have access to the following agents:
 1. savings_triage: Finds the best savings account for the user. Run with savings_triage
-1. credit_triage: Finds the best credit card account for the user. Run with credit_triage
+2. credit_triage: Finds the best credit card account for the user. Run with credit_triage
 
 When calling an agent, use exactly the following format:
 HANDOFF: <agent_name>()
@@ -16,7 +16,7 @@ HANDOFF: <agent_name>()
 For example, to call the savings agent, you would write:
 HANDOFF: SavingsTriageAgent()
 
-
+If the user decides to end the chat write exactly the following: ENDCHAT
 The information you have so far is:
 """
 

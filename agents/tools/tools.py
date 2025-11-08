@@ -8,7 +8,6 @@ def dummy_search_tool(search_term:str) -> str:
 def interest_calc(rate, investment, time):
     return investment*(1+rate)**time
 
-
 # Overall regex to match the functions
 match_num = r'[+-]?(?:\d*\.\d+|\d+)'
 
@@ -39,13 +38,15 @@ available_tools_desc = {
     "dummy_search_tool" : """dummy_search_tool: A search tool to find info about select accounts
     Input
         - search_term: A google search term to use""",
+
     "search_tool" : """self.search_tool: Get information about different savings account
 Input
     - search: A prompt explain what account you are trying to find. ONLY GIVE DETAILS OF THE ACCOUNT, NOT THAT YOU WANT THE BEST ONE
 Unlike others, call this tool with exactly: self.search_tool(<search term>:str)""",
+
     "interest_calc": """interest_calc: Calculate the growth of an investment over a few years.
     Input
         - rate (float): the interest rate as a number (eg 5%=0.05)
         - investment (float): the initial investment
-        - time (float): the number of years to leave the investment for"""
+        - time (float): the number of years to leave the investment for""",
 }
