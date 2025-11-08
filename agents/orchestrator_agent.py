@@ -1,6 +1,6 @@
 import re
 from agents.generic_agent import GenericAgent
-from agents.savings_agent import *
+from agents.search_agent import *
 from agents.triage_agent import *
 # The triage agent will ask questions until it understands the ask, it will then generate a prompt for the other agent
 
@@ -25,16 +25,25 @@ class Orchestrator(GenericAgent):
     def __init__(self, model_name: str = "gemini-2.5-flash"):
         super().__init__(model_name=model_name, main_prompt=ORCHESTRATOR_PROMPT, tools=[])
 
+        # Current agent - this function changes over time depending on the agent currently being used
         self.current_agent = self.run_agent
 
         self.triage_agents_to_handoff = ['savings_triage', 'credit_triage']
 
         # Agents
         self.savings_triage = SavingsTriageAgent()
-        self.savings_search = SavingsAgent()
         self.credit_triage = CreditTriageAgent()
 
-    def run_agent(self, user_input: str | None = None):
+    def run_agent(self, user_input: str | None = None, debug=False):
+        """Run the orchestrator agent. It's goal is to determine which agent the user needs to be handed off to.
+        Once it knows which agent the user needs, it changes the function that self.current_agent calls to self.run_triage_agent
+
+        Args:
+            user_input (str | None, optional): The users input, answer to the question it asks. Defaults to None.
+
+        Returns:
+            str: The orchestrators response
+        """
         # Add user input to response
         if user_input != None:
             self.prompt += f"User: {user_input}\n"
@@ -51,10 +60,11 @@ class Orchestrator(GenericAgent):
 
                 # Move to next agent
                 if next_question.group() in self.triage_agents_to_handoff:
-                    print("Next agent: " + next_question.group())
-                    self.current_agent = lambda x : self.run_triage_agent(eval("self." + next_question.group()), x)
+                    if debug:
+                        print("Moving to next agent: " + next_question.group())
+                    self.current_agent = lambda x, d : self.run_triage_agent(eval("self." + next_question.group()), x, d)
 
-                    response = self.current_agent(None)
+                    response = self.current_agent(None, debug)
 
                     return response
 
@@ -65,18 +75,24 @@ class Orchestrator(GenericAgent):
         else:
             return "ERROR: LLM failed to produce answer"
 
-    def run_triage_agent(self, agent:TriageAgent, user_input: str):
-        response, next_question = agent.run_agent(user_input)
+    def run_triage_agent(self, agent:TriageAgent, user_input: str, debug=False):
+        """Run the triage agent to ask questions to send to the savings/credit card agents
+
+        Args:
+            agent (TriageAgent): _description_
+            user_input (str): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        response, next_question = agent.run_agent(user_input, debug=False)
 
         # If no next question we move on to next agent
         if next_question == None:
-            # Currently send to savings agent. Need to change this
-            self.current_agent = lambda _ : self.run_search_agent(response, self.savings_search)
-            return "Thanks, I will now find the best suitable account"
-        else:
-            return response
+            # Agent has finished asking questions and has found answer. Reset to orchestrator
+            self.current_agent = self.run_agent
 
+            # Run agent to see what the user wants to do next
+            response += "\n-----------NEW CHAT-----------\n" + self.current_agent()
 
-    def run_search_agent(self, task, agent:SearchAgent):
-        output = agent.run_agent(task, True)
-        self.current_agent = self.run_agent
+        return response
