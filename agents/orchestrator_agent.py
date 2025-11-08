@@ -30,6 +30,9 @@ class Orchestrator(GenericAgent):
 
         self.triage_agents_to_handoff = ['savings_triage', 'credit_triage']
 
+        # Create regex for these:
+        self.triage_agents_to_handoff_regex = '('+ ')|('.join(map(str, self.triage_agents_to_handoff))+')'
+
         # Agents
         self.savings_triage = SavingsTriageAgent()
         self.credit_triage = CreditTriageAgent()
@@ -52,7 +55,7 @@ class Orchestrator(GenericAgent):
 
         if response != None:
             #TODO: Change Regex
-            next_question=re.search(r"(savings_triage)|(credit_triage)", response)
+            next_question=re.search(self.triage_agents_to_handoff_regex, response)
 
             # No tool is called then the agent has sufficient info so it has produced the final prompt to be used by the savings agent
             if next_question != None:
