@@ -4,18 +4,9 @@ import agents.orchestrator_agent as o
 
 import sys
 
-"""Run the code. first it checks for whether debug mode is on using a sys.arg. The it Runs a while loop of: The agent, Input from user etc
-"""
-if __name__ == "__main__":
+
+def run(debug):
     orces = o.Orchestrator()
-
-    # Check if Debug mode is on
-    debug = False
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "True":
-            debug = True
-            print("DEBUG MODE\nPrinting all agent outputs...")
-
 
     print(orces.current_agent(None, debug))
     while True:
@@ -27,3 +18,17 @@ if __name__ == "__main__":
             break
 
         print(output)
+
+"""Run the code. first it checks for whether debug mode is on using a sys.arg. The it Runs a while loop of: The agent, Input from user etc
+"""
+if __name__ == "__main__":
+    # Check if Debug mode is on
+    debug = False
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "True":
+            debug = True
+            print("DEBUG MODE\nPrinting all agent outputs...")
+
+    run(debug)
+    #credit = s.CreditAgent()
+    #print(credit.run_agent("Find me a best credit card with good rates on balance transfers", debug))

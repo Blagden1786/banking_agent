@@ -4,7 +4,8 @@ from agents.search_agent import *
 from agents.triage_agent import *
 # The triage agent will ask questions until it understands the ask, it will then generate a prompt for the other agent
 
-ORCHESTRATOR_PROMPT = """You are an orchestrator agent that's is to find out what the user is enquiring about and then hand over to the relevant agent. You will ask the user a series of questions to understand their needs. Once you have enough information, you will return python code that runs the correct agent. Make sure that your first message explains what you can do and asks the user what they need help with. You do not need to go into any more depth once you understand what agent you need to hand off to.
+ORCHESTRATOR_PROMPT = """You are an orchestrator agent that's is to find out what the user is enquiring about and then hand over to the relevant agent. Open the chat with an introduction and explain what you can help with.
+Once you know the broad area the user is equiring about, hand off to the relevant agent using the instructions below. DO NOT ATTEMPT TO GAIN ANY FURTHER INFORMATION.
 
 You have access to the following agents:
 1. savings_triage: Finds the best savings account for the user. Run with savings_triage
@@ -22,7 +23,7 @@ The information you have so far is:
 
 
 class Orchestrator(GenericAgent):
-    def __init__(self, model_name: str = "gemini-2.5-flash"):
+    def __init__(self, model_name: str = "gemini-2.5-flash-lite"):
         super().__init__(model_name=model_name, main_prompt=ORCHESTRATOR_PROMPT, tools=[])
 
         # Current agent - this function changes over time depending on the agent currently being used
@@ -88,7 +89,7 @@ class Orchestrator(GenericAgent):
         Returns:
             _type_: _description_
         """
-        response, next_question = agent.run_agent(user_input, debug=False)
+        response, next_question = agent.run_agent(user_input, debug)
 
         # If no next question we move on to next agent
         if next_question == None:
