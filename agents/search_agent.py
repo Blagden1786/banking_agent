@@ -14,12 +14,27 @@ Thought: you should always think about one action to take. Only one action at a 
 Action:$Python Function Call
 
 Now begin, remember to use the EXACT format as above.
-Once you have sufficient information to provide an answer give a natural answer to the question.
+Once you have sufficient information to provide an answer give a natural answer to the question.  Any formatting should be done using html markup.
 
 Requirments: """
 SAVINGS_URLS = ['https://www.natwest.com/savings.html', 'https://www.hsbc.co.uk/savings/products/']
 
-CREDIT_PROMPT = "Your goal is to reply with a limerick about a bank"
+
+# Prompts for credit card agent
+
+CREDIT_PROMPT = """TASK: Your main goal is to find the best credit card based on the given requirements.
+ALWAYS use the following exact format:
+
+Question: the input question you must answer
+Thought: you should always think about one action to take. Only one action at a time in this format:
+Action:$Python Function Call
+
+Now begin, remember to use the EXACT format as above.
+Once you have sufficient information to provide an answer give a natural answer to the question. Any formatting should be done using html markup.
+
+Requirments: """
+
+CREDIT_URLS = ['https://www.natwest.com/credit-cards.html']
 
 class SearchAgent(GenericAgent):
     def __init__(self, main_prompt, available_sites, tools=[], model_name: str = "gemini-2.5-flash"):
@@ -95,4 +110,4 @@ class SavingsAgent(SearchAgent):
 
 class CreditAgent(SearchAgent):
     def __init__(self):
-        super().__init__(CREDIT_PROMPT, [])
+        super().__init__(CREDIT_PROMPT, CREDIT_URLS)
