@@ -83,7 +83,7 @@ class TriageAgent(GenericAgent):
                     print("Prompt for SearchAgent: " + response)
 
                 # Return the result of the search agent
-                return self.next_agent.run_agent(response, debug), next_question
+                return self.next_agent.run_agent(response, debug), "COMPLETE"
 
             # Append the answer to the prompt for the next iteration
             self.prompt += f"\n{response}"

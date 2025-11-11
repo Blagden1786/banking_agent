@@ -15,7 +15,10 @@ When calling an agent, use exactly the following format:
 HANDOFF: <agent_name>()
 
 For example, to call the savings agent, you would write:
-HANDOFF: SavingsTriageAgent()
+HANDOFF: savings_triage
+
+For example, to call the savings agent, you would write:
+HANDOFF: credit_triage
 
 If the user decides to end the chat write exactly the following: ENDCHAT
 The information you have so far is:
@@ -98,5 +101,11 @@ class Orchestrator(GenericAgent):
 
             # Run agent to see what the user wants to do next
             response += "\n-----------NEW CHAT-----------\n" + self.current_agent()
+        elif next_question == "COMPLETE":
+            self.current_agent = lambda x,y: self.end_logic()
+            return response
 
         return response
+
+    def end_logic(self):
+        return "ENDCHAT", ""
