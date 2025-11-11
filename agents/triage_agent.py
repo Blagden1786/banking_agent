@@ -16,7 +16,7 @@ QUESTION: <Question>
 If the user decides to end the chat write exactly the following: ENDCHAT
 
 When providing the prompt, do not produce any other text other than the prompt. The prompt should follow this format exactly:
-Find me the best savings account with the following criteria: type of account: <type>; rate: <rate>; access amount: <access>; Interest earned from investment: <calculation>
+Find me the best savings account with the following criteria: type of account: <type>; rate: <rate>; access amount: <access>; Calculate the interest earned for an initial investment of <calculation>.
 
 The information you have so far is:
 """

@@ -66,6 +66,8 @@ class SearchAgent(GenericAgent):
             if debug:
                 print("\n\n----------------------AGENT RESPONSE----------------------")
                 print(response)
+                print("\n\n----------------------JUDGE RESPONSE----------------------")
+                print(self.judge.judger(prompt, response))
                 print("----------------------------------------------------------\n")
 
 

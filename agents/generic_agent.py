@@ -1,6 +1,8 @@
 from google import genai
 import re
+
 from .tools.tools import TOOL_PROMPT_START, available_tools_regex, TOOL_PROMPT_END, available_tools_desc
+from .llm_judge.judge import LLMJudge
 
 class GenericAgent:
     """Wrapper class for any agent."""
@@ -16,6 +18,8 @@ class GenericAgent:
         # Set model
         self.model_name = model_name
         self.agent = genai.Client()
+
+        self.judge = LLMJudge()
 
         # Initialize tools
         self.tools = tools
