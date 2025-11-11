@@ -10,9 +10,9 @@ Response 2: "UNSATISFACTORY: <details of why it should be redone>"
 
 A satisfactory response would be one that follows the exact wording rules where necessary, calls the tools it has access to, and produces the correct output.
 
-How the Agent works:
-- The agent can only make one tool call at a time.
-- Once it receives the output of the tool call, it will then do more reasoning to decide if it needs another one.
+General Rules to follow:
+- The agent can only make one tool call at a time. It is not allowed to call different tools.
+- When calling tools, the agent does not have to specify keywords. Both f(x) and f(input=x) are acceptable.
 - When asking a question, the agent must wait for the user to respond before it can continue.
 
 The following text will be the prompt followed by the LLM response:

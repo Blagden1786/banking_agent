@@ -57,6 +57,14 @@ class Orchestrator(GenericAgent):
         # Generate the response
         response = self.get_response(self.prompt)
 
+        # Print the response and LLM judge feedback if in debug mode
+        if debug:
+            print("\n\n----------------------AGENT RESPONSE----------------------")
+            print(response)
+            print("----------------------JUDGE RESPONSE----------------------")
+            print(self.judge.judger(self.prompt, response))
+            print("----------------------------------------------------------\n")
+
         if response != None:
             #TODO: Change Regex
             next_question=re.search(self.triage_agents_to_handoff_regex, response)
