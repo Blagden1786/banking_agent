@@ -100,12 +100,6 @@ class Orchestrator(GenericAgent):
             self.current_agent = self.run_agent
 
             # Run agent to see what the user wants to do next
-            response += "\n-----------NEW CHAT-----------\n" + self.current_agent()
-        elif next_question == "COMPLETE":
-            self.current_agent = lambda x,y: self.end_logic()
-            return response
+            response += "COMPLETE"
 
         return response
-
-    def end_logic(self):
-        return "ENDCHAT", ""

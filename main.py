@@ -2,6 +2,7 @@ import agents.search_agent as s
 import agents.triage_agent as t
 import agents.orchestrator_agent as o
 
+import re
 import sys
 
 
@@ -13,7 +14,8 @@ def run(debug):
         inp = input("Answer: ")
         output = orces.current_agent(inp, debug)
 
-        if output == 'ENDCHAT':
+        if output == 'ENDCHAT' or output.endswith("COMPLETE"):
+            print(output.removesuffix("COMPLETE"))
             print("Thanks for using this service today!! Hope to see you soon.")
             break
 

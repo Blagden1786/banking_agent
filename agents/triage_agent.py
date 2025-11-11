@@ -16,7 +16,7 @@ QUESTION: <Question>
 If the user decides to end the chat write exactly the following: ENDCHAT
 
 When providing the prompt, do not produce any other text other than the prompt. The prompt should follow this format exactly:
-Find me the best savings account with the following criteria: type of account: <type>; rate: <rate>; access amount: <access>; interest calculation: <calculation>
+Find me the best savings account with the following criteria: type of account: <type>; rate: <rate>; access amount: <access>; Interest earned from investment: <calculation>
 
 The information you have so far is:
 """
@@ -83,7 +83,7 @@ class TriageAgent(GenericAgent):
                     print("Prompt for SearchAgent: " + response)
 
                 # Return the result of the search agent
-                return self.next_agent.run_agent(response, debug), "COMPLETE"
+                return self.next_agent.run_agent(response, debug), None
 
             # Append the answer to the prompt for the next iteration
             self.prompt += f"\n{response}"

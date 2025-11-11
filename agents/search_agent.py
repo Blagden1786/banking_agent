@@ -14,7 +14,7 @@ Thought: you should always think about one action to take. Only one action at a 
 Action:$Python Function Call
 
 Now begin, remember to use the EXACT format as above.
-Once you have sufficient information to provide an answer give a natural answer to the question.  Any formatting should be done using html markup.
+Once you have sufficient information to provide an answer give a natural answer only. There is no need to provide your final thought process. Any formatting should be done using html markup.
 
 Requirments: """
 SAVINGS_URLS = ['https://www.natwest.com/savings.html', 'https://www.hsbc.co.uk/savings/products/']
@@ -30,7 +30,7 @@ Thought: you should always think about one action to take. Only one action at a 
 Action:$Python Function Call
 
 Now begin, remember to use the EXACT format as above.
-Once you have sufficient information to provide an answer give a natural answer to the question. Any formatting should be done using html markup.
+Once you have sufficient information to provide an answer give a natural answer only. There is no need to provide your final thought process. Any formatting should be done using html markup.
 
 Requirments: """
 
