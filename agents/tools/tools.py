@@ -39,7 +39,7 @@ available_tools_desc = {
     Input
         - search_term: A google search term to use""",
 
-    "search_tool" : """self.search_tool: Get information about different savings account
+    "search_tool" : """self.search_tool: Get information about different accounts. It can only provide information, not perform calculations
 Input
     - search: A prompt explain what account you are trying to find. ONLY GIVE DETAILS OF THE ACCOUNT, NOT THAT YOU WANT THE BEST ONE
 Unlike others, call this tool with exactly: self.search_tool(<search term>:str)""",
