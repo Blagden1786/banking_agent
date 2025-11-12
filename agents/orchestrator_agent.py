@@ -21,6 +21,8 @@ For example, to call the savings agent, you would write:
 HANDOFF: credit_triage
 
 If the user decides to end the chat write exactly the following: ENDCHAT
+
+If the user responds with a question or statement that is outside of your remit, ask your question again.
 The information you have so far is:
 """
 
@@ -51,19 +53,31 @@ class Orchestrator(GenericAgent):
         Returns:
             str: The orchestrators response
         """
-        # Add user input to response
-        if user_input != None:
-            self.prompt += f"User: {user_input}\n"
-        # Generate the response
-        response = self.get_response(self.prompt)
+        # repeat until the LLM generates a response the LLM is happy with
+        valid_resp = False
+        while not valid_resp:
+            # Add user input to response
+            if user_input != None:
+                self.prompt += f"User: {user_input}\n"
+            # Generate the response
+            response = self.get_response(self.prompt)
 
-        # Print the response and LLM judge feedback if in debug mode
-        if debug:
-            print("\n\n----------------------AGENT RESPONSE----------------------")
-            print(response)
-            print("----------------------JUDGE RESPONSE----------------------")
-            print(self.judge.judger(self.prompt, response))
-            print("----------------------------------------------------------\n")
+            # LLM judge
+            judge = self.judge.judger(self.prompt, response)
+            # If judge is happy then can continue
+            if judge.startswith("SATIS"):
+                valid_resp = True
+            else:
+                # otherwise append the feedback to the prompt
+                self.prompt += f"\n AGENT RESPONSE: {response}\n LLM JUDGE FEEDBACK: {judge}\n RETRY GENERATION...\n"
+
+            # Print the response and LLM judge feedback if in debug mode
+            if debug:
+                print("\n\n----------------------AGENT RESPONSE----------------------")
+                print(response)
+                print("----------------------JUDGE RESPONSE----------------------")
+                print(judge)
+                print("----------------------------------------------------------\n")
 
         if response != None:
             #TODO: Change Regex

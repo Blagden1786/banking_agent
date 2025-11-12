@@ -1,8 +1,9 @@
 from google import genai
 import re
 
-PROMPT = """You are an LLM judge, your goal is to ensure that the response from the LLM follows the given rules. As input, you will be given the prompt that the LLM has received and the response it generated.
-Your answer should produce one of two outputs:
+PROMPT = """You are a senior official in a tech company that is creating a multi-agent system to find the best bank accounts for the users. Your goal is to evaluate the response based on its adherence to the users input and the rules given to it in the prompt.
+
+Your response should be in one of the following forms:
 
 Response 1: "SATISFACTORY: <details of why it is good>"
 

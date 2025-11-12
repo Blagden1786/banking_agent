@@ -9,7 +9,7 @@ from .tools.web_scraper_llm import web_search
 SAVINGS_PROMPT = """TASK: Your main goal is to find the best savings account based on the given requirements and perform any other calculations when asked.
 ALWAYS use the following exact format:
 
-Question: the input question you must answer
+Observation: The observation from the previous tool use or input prompt
 Thought: you should always think about one action to take. Only one action at a time in this format:
 Action:$Python Function Call
 
@@ -25,7 +25,7 @@ SAVINGS_URLS = ['https://www.natwest.com/savings.html', 'https://www.hsbc.co.uk/
 CREDIT_PROMPT = """TASK: Your main goal is to find the best credit card based on the given requirements.
 ALWAYS use the following exact format:
 
-Question: the input question you must answer
+Observation: The observation from the previous tool use or input prompt
 Thought: you should always think about one action to take. Only one action at a time in this format:
 Action:$Python Function Call
 
