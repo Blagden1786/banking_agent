@@ -13,7 +13,7 @@ This agent is split into a triage agent and a search agent. It finds out what sp
 This agent is split into a triage agent and a search agent. It finds out what specific account the user wants and then finds it by searching the given websites
 
 <h4>LLM Judge</h4>
-LLM-as-a-judge is used to evaluate the responses of the agents. It can then feedback to the agent if it thinks the response needs to be redone.
+LLM-as-a-judge is used to evaluate the responses of the agents. It can then feedback to the agent if it thinks the response needs to be redone. The judge provides feedback at all steps but doesn't intstruct regeneration as this could quickly surpass the requests per minute limit for gemini API.
 
 <h3>Result</h3>
 These agents work together to produce a fully functional system that finds the best rate account satisfying the user requirements.
